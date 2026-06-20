@@ -1,0 +1,29 @@
+---
+title: "Protocol v0.1"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Objective
+
+Lock the analysis protocol before modeling.
+
+# Dataset roles
+
+- Discovery / nested CV: pending metadata audit
+- External validation: pending metadata audit
+
+# Leakage-control rules
+
+All preprocessing, supervised feature selection, class handling, and hyperparameter tuning must be inside training folds.
+
+# Primary outputs
+
+- Leakage inflation gap
+- Nested CV performance
+- Feature-stability metrics
+- External validation performance
+- Reproducible Omics Evidence Audit

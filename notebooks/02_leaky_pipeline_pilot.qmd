@@ -1,0 +1,16 @@
+---
+title: "Leaky Pipeline Pilot"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Warning
+
+This notebook intentionally performs global supervised feature selection before cross-validation for comparison only.
+
+# Goal
+
+Estimate apparent performance from a naive/leaky SMO/SVM pipeline.

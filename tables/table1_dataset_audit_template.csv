@@ -1,0 +1,6 @@
+geo_accession,planned_role,platform,total_n,pcr_n,rd_n,treatment_context,endpoint_definition,include_exclude_notes,overlap_check_status
+GSE25055,discovery_candidate,TBD,TBD,TBD,TBD,TBD,pCR vs RD,Verify metadata and labels,pending
+GSE25065,external_validation_candidate,TBD,TBD,TBD,TBD,TBD,pCR vs RD,Verify non-overlap,pending
+GSE20194,external_validation_candidate,TBD,TBD,TBD,TBD,TBD,pCR vs RD,Verify endpoint compatibility,pending
+GSE41998,sensitivity_candidate,TBD,TBD,TBD,TBD,TBD,pCR vs RD,Optional after audit,pending
+GSE20271,sensitivity_candidate,TBD,TBD,TBD,TBD,TBD,pCR vs RD,Optional after audit,pending

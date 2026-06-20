@@ -1,0 +1,38 @@
+# Candidate dataset registry for leakage-aware SMO/SVM omics audit
+# Final roles must be confirmed after metadata, sample overlap, and endpoint harmonization.
+
+datasets:
+  - accession: GSE25055
+    planned_role: discovery_candidate
+    platform: Affymetrix HG-U133A / GPL96 expected
+    endpoint: pCR_vs_residual_disease
+    status: verify_metadata_and_sample_counts
+    notes: Candidate for primary nested-CV leakage experiment.
+
+  - accession: GSE25065
+    planned_role: external_validation_candidate
+    platform: Affymetrix HG-U133A / GPL96 expected
+    endpoint: pCR_vs_residual_disease
+    status: verify_non_overlap_and_labels
+    notes: Potential Hatzis validation subseries; do not mix into discovery preprocessing or tuning.
+
+  - accession: GSE20194
+    planned_role: external_validation_candidate
+    platform: Affymetrix HG-U133A / GPL96 expected
+    endpoint: pCR_vs_residual_disease
+    status: verify_labels_and_compatibility
+    notes: Independent public cohort candidate.
+
+  - accession: GSE41998
+    planned_role: sensitivity_candidate
+    platform: verify
+    endpoint: pCR_vs_residual_disease
+    status: optional_after_metadata_audit
+    notes: Use only if labels and platform harmonization are clean.
+
+  - accession: GSE20271
+    planned_role: sensitivity_candidate
+    platform: verify
+    endpoint: pCR_vs_residual_disease
+    status: optional_after_metadata_audit
+    notes: Use only if labels and platform harmonization are clean.

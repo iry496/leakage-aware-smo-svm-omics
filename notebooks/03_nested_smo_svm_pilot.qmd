@@ -1,0 +1,19 @@
+---
+title: "Guarded Nested SMO/SVM Pilot"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Goal
+
+Run the leakage-aware nested SMO/SVM pipeline.
+
+# Required behavior
+
+- Outer test folds are untouched until final evaluation.
+- Feature selection occurs inside inner training folds only.
+- Class weighting or SMOTE occurs inside training folds only.
+- Hyperparameters are selected inside the inner loop.

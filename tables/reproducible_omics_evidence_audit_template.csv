@@ -1,0 +1,8 @@
+audit_domain,metric,result_placeholder,interpretation_placeholder
+Predictive signal,AUROC / PR-AUC / MCC,TBD,TBD
+Leakage sensitivity,Delta AUROC / Delta PR-AUC / Delta MCC,TBD,Low / moderate / high inflation
+Feature reproducibility,Nogueira stability / Jaccard / frequency,TBD,Low / moderate / high stability
+Model-selection stability,C and gamma volatility,TBD,Stable or unstable hyperparameter selection
+Imbalance sensitivity,Class weighting vs SMOTE sensitivity,TBD,Robust or sensitive to balancing method
+External transportability,External AUROC / PR-AUC / MCC,TBD,Generalizes or does not generalize
+Reproducibility,"Code, fold IDs, seeds, data accessions",TBD,Complete or incomplete

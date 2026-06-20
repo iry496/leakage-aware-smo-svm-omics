@@ -1,0 +1,1 @@
+Run sessionInfo() after each full analysis and save the output here.

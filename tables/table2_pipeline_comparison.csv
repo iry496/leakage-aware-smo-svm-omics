@@ -1,0 +1,7 @@
+pipeline_step,naive_leaky_pipeline,guarded_nested_pipeline,leakage_risk_controlled
+Scaling,Fit on full dataset or unclear,Fit on training fold only,Preprocessing leakage
+Feature selection,Global supervised selection before CV,Inner training fold only,Feature-selection leakage
+Class imbalance,SMOTE before split or unclear,Class weighting primary; SMOTE training fold only,Resampling leakage
+Hyperparameter tuning,Same CV used for tuning and evaluation,Inner CV only,Model-selection bias
+Evaluation,CV on preselected features,Outer CV test fold only,Optimistic bias
+External validation,Often tuned after seeing validation labels,Frozen pipeline evaluated once,External validation contamination

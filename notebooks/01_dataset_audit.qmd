@@ -1,0 +1,24 @@
+---
+title: "Dataset Audit"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+source("../R/00_config.R")
+```
+
+# Goal
+
+Create Table 1: public transcriptomic cohorts and endpoint harmonization.
+
+# Tasks
+
+1. Verify GEO accession.
+2. Extract sample metadata.
+3. Harmonize pCR/RD labels.
+4. Check for overlapping samples.
+5. Lock discovery and validation roles.

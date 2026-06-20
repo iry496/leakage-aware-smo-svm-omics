@@ -1,0 +1,19 @@
+---
+title: "Figures and Tables"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Goal
+
+Generate manuscript-ready figures and tables.
+
+# Outputs
+
+- Figure 1: naive versus leakage-aware workflow
+- Table 1: dataset audit
+- Table 2: pipeline comparison
+- Table 6: Reproducible Omics Evidence Audit

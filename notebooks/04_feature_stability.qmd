@@ -1,0 +1,12 @@
+---
+title: "Feature Stability"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Goal
+
+Compute Nogueira stability, Jaccard overlap, and feature-selection frequencies from fold-level selected feature sets.

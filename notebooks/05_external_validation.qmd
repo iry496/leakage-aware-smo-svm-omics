@@ -1,0 +1,16 @@
+---
+title: "External Validation"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+# Goal
+
+Project the frozen discovery-trained pipeline onto independent public cohorts.
+
+# Rule
+
+No external validation label may be used for feature selection, threshold tuning, hyperparameter tuning, or preprocessing decisions.
