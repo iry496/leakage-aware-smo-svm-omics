@@ -1,0 +1,85 @@
+---
+title: "01 - Dataset Audit"
+subtitle: "Leakage-Aware SMO/SVM Transcriptomic Biomarker Classification"
+author: "Project team"
+format:
+  html:
+    toc: true
+    code-fold: false
+execute:
+  warning: true
+  message: true
+---
+
+## Purpose
+
+This notebook documents the **dataset audit** (Table 1) for the project.
+It is the explanatory companion to `scripts/01_dataset_audit.R`.
+
+Per `CLAUDE.md`, this step does **not** download or commit large raw
+expression matrices. We record **only** accession-level metadata and
+cohort summaries. All numeric cohort counts start as `NA` placeholders
+and **must be verified by a human** against the official GEO records
+before any downstream use.
+
+## Scope of the audit
+
+Cohorts considered:
+
+- **GSE25055** - discovery (model development / nested CV).
+- **GSE25065** - external validation.
+- **GSE20194** - external validation (MAQC-II; high overlap risk).
+- **GSE41998** - optional, pending independence check.
+- **GSE20271** - optional, pending independence check.
+
+Endpoint of interest: pathologic complete response (**pCR**) vs
+residual disease (**RD**) after neoadjuvant chemotherapy.
+
+## Leakage-control reminders
+
+Following `CLAUDE.md` (scientific rules):
+
+1. External validation cohorts must never inform feature selection,
+   threshold tuning, hyperparameter tuning, or batch correction.
+2. All supervised steps belong inside training folds only.
+3. Sample overlap across MAQC-II-derived series (GSE25055 / GSE25065 /
+   GSE20194) is a concrete leakage risk and must be quantified at the
+   GSM level before these cohorts are combined.
+
+## Build the audit table
+
+The actual table construction lives in the script so it stays
+reproducible. Here we simply source it and display the result.
+
+```{r}
+#| label: run-audit
+source(here::here("scripts", "01_dataset_audit.R"))
+```
+
+```{r}
+#| label: show-table
+audit_path <- here::here("tables", "table1_dataset_audit_filled.csv")
+audit_tbl <- readr::read_csv(audit_path, show_col_types = FALSE)
+knitr::kable(audit_tbl)
+```
+
+## Human-verification checklist
+
+> The values below are **not** final. A human must confirm each item
+> against the GEO series pages and study supplements.
+
+- [ ] Confirm platform (GPL) accession for each series.
+- [ ] Fill `total_n`, `pcr_n`, `rd_n` from curated clinical annotation
+      (not the raw GSM count).
+- [ ] Confirm the exact pCR / RD endpoint definition per study.
+- [ ] Cross-check GSM identifiers to quantify true sample overlap.
+- [ ] Decide inclusion of optional cohorts only after independence is
+      established.
+
+## Output
+
+Running this notebook (or the script) writes:
+
+- `tables/table1_dataset_audit_filled.csv`
+
+No raw expression data is written to the repository.
