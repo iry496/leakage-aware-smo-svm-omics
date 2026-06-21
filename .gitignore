@@ -1,1 +1,4 @@
 /.quarto/
+*_files/
+*_cache/
+notebooks/*.html
