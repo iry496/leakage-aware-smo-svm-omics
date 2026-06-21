@@ -1,0 +1,2 @@
+"analysis","discovery_cohort","external_cohort","n_external","auroc","pr_auc","balanced_accuracy","mcc","sensitivity","specificity","tp","fp","tn","fn"
+"external_validation","GSE25055","GSE25065",182,0.6078231292517,0.306042880454803,0.538095238095238,0.134708485408726,0.119047619047619,0.957142857142857,5,6,134,37
