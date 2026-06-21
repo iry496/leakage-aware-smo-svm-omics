@@ -1,0 +1,77 @@
+---
+title: "Reproducible Omics Evidence Audit (v1)"
+subtitle: "GSE25055 discovery / GSE25065 external - leakage-aware SMO/SVM"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Overview
+
+This notebook presents the first **Reproducible Omics Evidence Audit Table**,
+integrating four completed stages -- the dataset audit, the GSE25055
+leaky-vs-guarded pilot, the feature-stability analysis, and the GSE25065
+external validation -- into one auditable table. **No new modeling is performed
+here**; every value is read from previously committed stage outputs and
+recombined.
+
+This is a **methodology / audit** result, not a clinical biomarker discovery.
+
+Build script: `scripts/06_build_evidence_audit_table.R`
+(run `source(...)` to regenerate the tables below).
+
+```{r read}
+audit <- read.csv(file.path("tables", "evidence_audit",
+                            "reproducible_omics_evidence_audit.csv"),
+                  stringsAsFactors = FALSE, check.names = FALSE)
+```
+
+## Evidence audit table
+
+```{r table}
+knitr::kable(
+  audit,
+  col.names = c("Audit domain", "Metric", "Value", "Interpretation", "Manuscript use")
+)
+```
+
+## Headline numbers
+
+```{r headline}
+get_val <- function(m) audit$value[audit$metric == m]
+headline <- data.frame(
+  Quantity = c("Leakage gap AUROC (leaky - guarded)",
+               "Leakage gap PR-AUC (leaky - guarded)",
+               "External drop AUROC (nested -> external)",
+               "External drop PR-AUC (nested -> external)",
+               "External drop sensitivity (nested -> external)",
+               "Nogueira feature-stability index"),
+  Value = c(get_val("Leakage gap AUROC (leaky - guarded)"),
+            get_val("Leakage gap PR-AUC (leaky - guarded)"),
+            get_val("Drop AUROC (nested -> external)"),
+            get_val("Drop PR-AUC (nested -> external)"),
+            get_val("Drop sensitivity (nested -> external)"),
+            get_val("Nogueira stability index")),
+  stringsAsFactors = FALSE
+)
+knitr::kable(headline)
+```
+
+## Cautious interpretation
+
+- This is a **methodology / audit** result, **not** a clinical biomarker
+  discovery; no clinical claims are made.
+- The **leaky** pipeline **inflates AUROC/PR-AUC**; the **guarded nested**
+  pipeline gives an honest estimate and **improves imbalance-aware metrics**
+  (balanced accuracy and MCC).
+- **Feature stability is moderate** -- a small reproducible core (28 of 222
+  features selected in all folds) coexists with a large unstable tail (102 of
+  222 selected only once).
+- **External validation shows transportability limits**: discrimination and
+  minority-class (pCR) sensitivity fall on the independent GSE25065 cohort,
+  while specificity is roughly maintained.
+
+Full narrative, limitations, and unresolved risks:
+`results/evidence_audit/evidence_audit_notes.md`.
