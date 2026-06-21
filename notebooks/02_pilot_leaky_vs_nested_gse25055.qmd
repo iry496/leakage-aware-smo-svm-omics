@@ -1,0 +1,111 @@
+---
+title: "Pilot: Leaky vs Nested SMO/SVM on GSE25055"
+subtitle: "First reproducible pilot (discovery cohort only)"
+format: html
+execute:
+  echo: true
+  warning: true
+  message: true
+---
+
+# Purpose
+
+This pilot compares two transcriptomic classification pipelines on **GSE25055
+only**:
+
+- **Pipeline A (naive / leaky baseline):** supervised feature selection is
+  performed **globally, before** cross-validation. This deliberately leaks
+  held-out label information and yields optimistic apparent performance.
+- **Pipeline B (guarded nested pipeline):** feature selection, scaling, class
+  weighting, and hyperparameter tuning happen **only inside training folds**.
+  Outer CV gives the honest generalization estimate; inner CV does selection
+  and tuning.
+
+This is a **pilot, not the full paper analysis**. It uses GSE25055 only and a
+single feature budget (top K = 100). It does **not** use GSE25065, GSE41998,
+GSE20194, GSE20271, or any external validation data.
+
+# Cohort and labels
+
+- Accession: **GSE25055** (GPL96 / HG-U133A), discovery cohort.
+- Endpoint: **pCR vs RD** from the `pathologic_response_pcr_rd` metadata field.
+- Samples coded **NA** are excluded (per the dataset audit, 4 NA-coded samples;
+  expected usable counts pCR = 57, RD = 249).
+
+# How to run
+
+```bash
+# From the repository root:
+Rscript scripts/00_setup.R                       # check packages / session info
+Rscript scripts/02_leaky_baseline_gse25055.R     # Pipeline A (leaky)
+Rscript scripts/03_nested_smo_svm_gse25055.R     # Pipeline B (guarded nested)
+```
+
+Both scripts write per-pipeline metrics and predictions into
+`results/pilot_gse25055/`. The chunk below combines them into the pilot
+comparison table.
+
+# Pipeline A: naive / leaky baseline
+
+```{r}
+#| label: leaky-baseline
+source("scripts/02_leaky_baseline_gse25055.R")
+leaky <- main()
+leaky$metrics
+```
+
+# Pipeline B: guarded nested pipeline
+
+```{r}
+#| label: nested-pipeline
+source("scripts/03_nested_smo_svm_gse25055.R")
+nested <- main()
+nested$metrics
+```
+
+# Side-by-side comparison
+
+We expect the leaky baseline (Pipeline A) to look **more optimistic** than the
+guarded nested pipeline (Pipeline B); the gap is the quantity this methodology
+paper audits.
+
+```{r}
+#| label: comparison
+comparison <- rbind(leaky$metrics, nested$metrics)
+out_dir <- file.path("tables", "pilot_gse25055")
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
+write.csv(comparison,
+          file.path(out_dir, "pilot_performance_comparison.csv"),
+          row.names = FALSE)
+
+# Combined predictions for the results directory.
+leaky_pred  <- transform(leaky$predictions,  pipeline = "A_leaky_baseline")
+nested_pred <- transform(nested$predictions, pipeline = "B_guarded_nested")
+common_cols <- intersect(names(leaky_pred), names(nested_pred))
+all_pred <- rbind(leaky_pred[, common_cols], nested_pred[, common_cols])
+write.csv(all_pred,
+          file.path("results", "pilot_gse25055", "pilot_predictions.csv"),
+          row.names = FALSE)
+
+comparison
+```
+
+# Session info
+
+```{r}
+#| label: session-info
+writeLines(capture.output(sessionInfo()),
+           file.path("results", "pilot_gse25055", "pilot_session_info.txt"))
+sessionInfo()
+```
+
+# Notes on leakage control
+
+- **Pipeline A is leaky on purpose.** Its t-test feature selection sees every
+  sample's label before folds are created. Do not interpret its numbers as a
+  generalization estimate.
+- **Pipeline B never lets the outer test fold influence fitting.** Feature
+  selection and the standardizer are fit on training rows only; SVM cost is
+  chosen by inner CV; class imbalance is handled with class weights (no SMOTE
+  in this first pilot).
+- Random seeds and fold assignments are fixed via `R/00_config.R` (`SEED`).
