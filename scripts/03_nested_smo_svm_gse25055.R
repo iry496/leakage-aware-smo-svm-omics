@@ -155,6 +155,7 @@ run_nested <- function(x, y, outer_folds = OUTER_FOLDS, top_k = TOP_K,
 
   preds        <- list()
   fold_records <- list()
+  feat_records <- list()
 
   for (f in seq_along(folds)) {
     test_idx  <- folds[[f]]
@@ -173,6 +174,15 @@ run_nested <- function(x, y, outer_folds = OUTER_FOLDS, top_k = TOP_K,
     # Feature selection on outer-TRAIN only (NOT on the full dataset).
     fs    <- select_features(x_train, y_train, method = "t_test", top_k = top_k)
     feats <- fs$features
+
+    # Record per-outer-fold selected features for feature-stability analysis.
+    # Pure logging: does not alter selection, model logic, top K, folds, or tuning.
+    feat_records[[f]] <- data.frame(
+      fold    = f,
+      rank    = seq_along(feats),
+      feature = feats,
+      stringsAsFactors = FALSE
+    )
 
     # Scaler fit on outer-TRAIN only, then applied to the outer-TEST fold.
     std   <- fit_standardizer(x_train[, feats, drop = FALSE])
@@ -201,7 +211,8 @@ run_nested <- function(x, y, outer_folds = OUTER_FOLDS, top_k = TOP_K,
 
   list(
     predictions = do.call(rbind, preds),
-    fold_info   = do.call(rbind, fold_records)
+    fold_info   = do.call(rbind, fold_records),
+    selected_features = do.call(rbind, feat_records)
   )
 }
 
@@ -245,6 +256,9 @@ main <- function() {
                    row.names = FALSE)
   utils::write.csv(res$fold_info,
                    file.path(RESULTS_DIR, "nested_smo_svm_fold_info.csv"),
+                   row.names = FALSE)
+  utils::write.csv(res$selected_features,
+                   file.path(RESULTS_DIR, "nested_selected_features_by_fold.csv"),
                    row.names = FALSE)
 
   message("[main] Guarded nested pipeline complete. Metrics:")
