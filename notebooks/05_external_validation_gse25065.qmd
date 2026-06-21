@@ -1,0 +1,80 @@
+---
+title: "External Validation: GSE25055 -> GSE25065"
+subtitle: "Leakage-aware SMO/SVM omics audit"
+format: html
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+## Overview
+
+This notebook reports the first **external-validation** analysis of the study.
+The full SMO/SVM pipeline -- t-test feature selection (top K = 100),
+standardization, SVM cost, and the decision rule -- was fit and **frozen on
+GSE25055 (discovery)** only, then applied **exactly once** to **GSE25065
+(external validation)**.
+
+GSE25065 was **not** used for feature selection, hyperparameter tuning,
+scaling-parameter estimation, threshold selection, class balancing, or any
+model-design decision. GSE25055 and GSE25065 are non-overlapping by design
+(the original Hatzis et al. discovery/validation split) and share platform
+GPL96.
+
+Pipeline code: `scripts/05_external_validation_gse25065.R`
+(run `source(...); main()` to regenerate every table below).
+
+```{r read-outputs}
+res_dir <- file.path("results", "external_validation_gse25065")
+tab_dir <- file.path("tables",  "external_validation_gse25065")
+
+summary_tab <- read.csv(file.path(tab_dir, "external_validation_summary.csv"))
+metrics     <- read.csv(file.path(res_dir, "gse25065_external_metrics.csv"))
+preds       <- read.csv(file.path(res_dir, "gse25065_external_predictions.csv"))
+feats       <- read.csv(file.path(res_dir, "final_gse25055_selected_features.csv"))
+```
+
+## Cohort summary and frozen-model configuration
+
+```{r summary-table}
+knitr::kable(summary_tab, col.names = c("metric", "value"))
+```
+
+## External-validation metrics (GSE25065)
+
+```{r metrics-table}
+knitr::kable(
+  data.frame(
+    metric = c("AUROC", "PR-AUC", "Balanced accuracy", "MCC",
+               "Sensitivity (pCR)", "Specificity (RD)"),
+    value  = round(c(metrics$auroc, metrics$pr_auc, metrics$balanced_accuracy,
+                     metrics$mcc, metrics$sensitivity, metrics$specificity), 4)
+  )
+)
+```
+
+## Confusion matrix (GSE25065)
+
+```{r confusion}
+cm <- table(truth = preds$truth, predicted = preds$predicted)
+knitr::kable(as.data.frame.matrix(cm))
+```
+
+## Top frozen discovery features
+
+```{r top-features}
+knitr::kable(head(feats, 20))
+```
+
+## Notes and limitations
+
+The full methodological notes, leakage-control statement, feature-alignment
+result, and limitations are in
+`results/external_validation_gse25065/external_validation_notes.md`.
+
+Headline: external AUROC (~0.61) is below the discovery guarded nested-CV
+estimate (~0.73), the model is biased toward the majority class (high
+specificity, low pCR sensitivity), and all 100 frozen probes aligned to GSE25065
+(0 missing). This is a leakage-honest transportability estimate from a single
+external cohort, not evidence of a deployable biomarker.
