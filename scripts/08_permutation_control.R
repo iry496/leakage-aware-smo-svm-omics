@@ -7,8 +7,8 @@
 # Permutes the pCR/RD labels (sample-level) and reruns BOTH pipelines so that:
 #   * the GUARDED nested pipeline should collapse to ~chance, and
 #   * the LEAKY baseline should remain ABOVE chance even with random labels,
-# quantifying how much apparent performance is produced by feature-selection
-# leakage alone.
+# supporting the interpretation that feature-selection leakage can inflate
+# apparent performance (diagnostic only; not evidence of biological signal).
 #
 # Scientific design (UNCHANGED from the verified smoke run):
 #   * GSE25055 only; label permutation only (expression matrix never altered).
@@ -383,8 +383,16 @@ main <- function() {
     "", "## Runtime",
     sprintf("- mean compute %.1f s/perm; wall %.1f s/perm with %d workers; total %.1f min.", mean_compute, wall_per_perm, N_WORKERS, total_wall / 60),
     sprintf("- old (serial, original selector) was %.1f s/perm.", OLD_PER_PERM),
-    sprintf("- estimated B=200: %s ; B=1000: %s (at current wall throughput).", est(200), est(1000)),
-    "", "_A guarded null centered near chance and a leaky null above chance would support the interpretation that feature-selection leakage can inflate apparent performance. Smoke B is small and intended only for code validation._")
+    sprintf("- estimated B=200: %s ; B=1000: %s (at current wall throughput).", est(200), est(1000)))
+  # Footer: smoke runs are code-validation only; full runs (B=200/B=1000) carry
+  # the diagnostic interpretation. Detect smoke by RUN_TAG or small B.
+  is_smoke <- grepl("smoke", RUN_TAG, ignore.case = TRUE) || B_PERM < 50
+  footer <- if (is_smoke) {
+    "_Smoke B is small and intended only for code validation._"
+  } else {
+    "_This permutation run estimates null behavior under shuffled labels. The leaky null distribution should be interpreted as a diagnostic of feature-selection leakage, not as evidence of biological signal. It supports the interpretation that feature-selection leakage can inflate apparent performance._"
+  }
+  notes <- c(notes, "", footer)
   writeLines(notes, file.path(RESULTS_DIR, sprintf("permutation_%s_notes.md", RUN_TAG)))
 
   message(sprintf("[perm] DONE (%s). Identity: %s. compute %.1fs/perm; wall %.1fs/perm (%d workers). B=200 ~ %s; B=1000 ~ %s.",
