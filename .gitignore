@@ -2,3 +2,12 @@
 *_files/
 *_cache/
 notebooks/*.html
+
+# Data and large binaries (never commit raw/processed expression data)
+processed_data/
+raw_data/
+*.RData
+*.rds
+*.RDS
+*.CEL
+*.gz
