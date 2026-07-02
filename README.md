@@ -1,89 +1,56 @@
-# Leakage-Aware SMO/SVM Omics Audit
+# A Reproducible Audit of Data Leakage, Feature Stability, and Transportability in Transcriptomic Biomarker Classification
 
-This repository supports the manuscript draft:
+This repository accompanies the manuscript submitted for review. It is organized for **AI desk review** and for archival on **Zenodo**.
 
-**A Leakage-Aware Data Mining Framework for Transcriptomic Biomarker Classification Using Nested SMO/SVM and Feature-Stability Auditing**
+## Authors
 
-Target journal: **BioData Mining**  
-Article type: **Methodology**
+- **Iris Yang**¹ \* — California State University, Los Angeles, USA; Purdue University, USA
+- **Wing-Keung Wong**² \* — Asia University, Taiwan
+- **Paul Tan**³ — Affiliation to be finalized
+- **Chung-I Huang**⁴ — National Chung Hsing University, Taiwan
+- **Jewel Wang**⁵ — Brandeis University, USA
 
-## Project purpose
+\* Co-corresponding authors.
 
-This project compares two families of public transcriptomic biomarker classification pipelines:
+## Summary
 
-1. **Naive / leaky SMO/SVM pipeline**: supervised feature selection is performed globally before cross-validation.
-2. **Guarded nested SMO/SVM pipeline**: preprocessing, feature selection, class-imbalance handling, and hyperparameter tuning are performed only inside training folds.
+High-dimensional transcriptomic biomarker studies are vulnerable to **data leakage** when feature selection, preprocessing, scaling, or class balancing is performed before validation splitting, because reported performance can then reflect contamination of the test fold rather than generalizable signal. This work is a reproducible **audit case study** using a leakage-aware linear SVM (SMO-trained) workflow on public breast-cancer neoadjuvant-chemotherapy cohorts (pCR vs. residual disease). It contrasts a naive pipeline that allows global feature-selection leakage against a guarded nested pipeline, and reports leakage sensitivity, feature-selection stability, and external-cohort transportability together in a single evidence-audit template.
 
-The goal is to quantify feature-selection leakage, evaluate feature stability, and test external transportability using public breast cancer neoadjuvant chemotherapy response datasets.
+The study is **not** a new algorithm, a clinical biomarker discovery claim, or a demonstration of model-agnostic universality.
 
-## Current status
+## Cohorts
 
-This is a **repository scaffold**. It contains the planned directory structure, protocol, notebook templates, R function stubs, and table templates. It does not yet contain final analysis outputs.
+| Cohort | Platform | Role |
+| --- | --- | --- |
+| GSE25055 | Affymetrix HG-U133A (GPL96) | Discovery / internal validation |
+| GSE25065 | Affymetrix HG-U133A (GPL96) | Same-platform, same-study-family validation |
+| GSE41998 | Affymetrix HG-U133A 2.0 (GPL571) | Predeclared cross-platform transportability sensitivity |
+| GSE20194 / GSE20271 | — | Documented but held out (MDACC-lineage patient-overlap risk) |
 
-## Planned public datasets
-
-Candidate GEO cohorts:
-
-- GSE25055: discovery/nested-CV candidate
-- GSE25065: external-validation candidate if non-overlapping and clean
-- GSE20194: external-validation candidate
-- GSE41998 / GSE20271: optional sensitivity cohorts after metadata audit
-
-Final cohort roles must be locked in `docs/protocol_v0_1.md` after sample overlap and endpoint harmonization checks.
-
-## Leakage-control rules
-
-| Step | Guarded implementation |
-|---|---|
-| Scaling | Fit on training fold only; apply to validation/test folds |
-| Supervised feature selection | Training fold only |
-| Hyperparameter tuning | Inner cross-validation loop only |
-| Class weighting / SMOTE | Training fold only; SMOTE only as sensitivity analysis |
-| External validation | Frozen preprocessing, feature set, model, and threshold |
+Leakage and transportability are treated as **distinct** properties. The GSE41998 result is a cross-platform transportability sensitivity check, **not** proof of leakage.
 
 ## Repository structure
 
-```text
-leakage-aware-smo-svm-omics/
-  R/                     Reusable R functions
-  scripts/               Run scripts for dataset audit and pipelines
-  notebooks/             Quarto notebook templates for protocol and analyses
-  data_accessions/        GEO accession registry and dataset notes
-  metadata/              Curated sample metadata after audit
-  raw_data/              Local raw downloads; do not commit large raw data
-  processed_data/        Derived matrices; do not commit large files without policy check
-  results/               Pilot and full analysis outputs
-  figures/               Manuscript figures
-  tables/                Manuscript and supplementary tables
-  docs/                  Protocol and analysis notes
-  manuscript/            Manuscript DOCX and writing files
-  supplementary/         Supplementary tables and files
-  environment/           Package/version environment files
+```
+.
+├── README.md                                  # this file
+├── LICENSE                                    # CC-BY-4.0
+├── CITATION.cff                               # citation metadata
+├── .zenodo.json                               # Zenodo deposit metadata
+├── .gitignore
+└── manuscript/
+    ├── Leakage_Aware_SMO_SVM_Manuscript_v10_2_final_QA.docx
+    └── v10_2_final_QA_changelog.md            # v10.1 → v10.2 consistency patch
 ```
 
-## Suggested execution order
+## Version
 
-1. `notebooks/00_protocol_v0_1.qmd`
-2. `scripts/01_dataset_audit.R`
-3. `scripts/02_run_leaky_baseline.R`
-4. `scripts/03_run_nested_pipeline.R`
-5. `scripts/04_feature_stability.R`
-6. `scripts/05_external_validation.R`
-7. `scripts/06_make_figures_tables.R`
+Current manuscript version: **v10.2** (final consistency QA). See `manuscript/v10_2_final_QA_changelog.md` for the v10.1 → v10.2 change record.
 
-## Reproducibility plan
+## License
 
-Before submission, archive a frozen release on Zenodo and include:
+This work is licensed under the **Creative Commons Attribution 4.0 International (CC-BY-4.0)** license. See [`LICENSE`](LICENSE).
 
-- GitHub commit hash
-- Zenodo DOI
-- package versions / session info
-- random seeds
-- fold assignments
-- selected feature lists
-- performance tables
-- external validation outputs
+## How to cite
 
-## Important note
-
-This repository is designed to prevent leakage. Do not modify the pipeline by fitting feature selection, scaling, threshold selection, SMOTE, or hyperparameter tuning on test or external validation data.
+See [`CITATION.cff`](CITATION.cff). After Zenodo archival, cite the resulting DOI.

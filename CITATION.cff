@@ -1,0 +1,50 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "A Reproducible Audit of Data Leakage, Feature Stability, and Transportability in Transcriptomic Biomarker Classification"
+abstract: >-
+  A reproducible audit case study of data leakage, feature-selection stability,
+  and external-cohort transportability in transcriptomic biomarker classification,
+  using a leakage-aware SMO-trained linear SVM workflow on public breast-cancer
+  neoadjuvant-chemotherapy cohorts (pCR vs. residual disease). Cohorts: GSE25055
+  (discovery/internal validation), GSE25065 (same-platform same-study-family
+  validation), and GSE41998 (predeclared cross-platform transportability
+  sensitivity).
+type: software
+version: "1.0.0"
+date-released: "2026-06-24"
+license: CC-BY-4.0
+repository-code: "https://github.com/iry496/leakage-aware-smo-svm-omics"
+keywords:
+  - data leakage
+  - transcriptomics
+  - biomarker discovery
+  - support vector machine
+  - nested cross-validation
+  - feature selection
+  - feature stability
+  - pathological complete response
+authors:
+  - given-names: Iris
+    family-names: Yang
+    affiliation: "California State University, Los Angeles, USA; Purdue University, USA"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # [TO BE SUPPLIED]
+  - given-names: Wing-Keung
+    family-names: Wong
+    affiliation: "Asia University, Taiwan"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # [TO BE SUPPLIED]
+  - given-names: Paul
+    family-names: Tan
+    affiliation: "Harvard University Extension School"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # [TO BE SUPPLIED]
+  - given-names: Chung-I
+    family-names: Huang
+    affiliation: "National Chung Hsing University, Taiwan"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # [TO BE SUPPLIED]
+  - given-names: Jewel
+    family-names: Wang
+    affiliation: "Brandeis University, USA"
+    # orcid: "https://orcid.org/0000-0000-0000-0000"  # [TO BE SUPPLIED]
+# identifiers:
+#   - type: doi
+#     value: "10.5281/zenodo.XXXXXXX"   # [TO BE SUPPLIED — Zenodo DOI minted at v1.0.0 release]
+#     description: "Archived v1.0.0 release on Zenodo"
