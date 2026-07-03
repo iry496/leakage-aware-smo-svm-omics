@@ -1,42 +1,27 @@
 {
-  "title": "A Reproducible Audit of Data Leakage, Feature Stability, and Transportability in Transcriptomic Biomarker Classification",
+  "title": "A Reproducible Evidence-Audit Framework for Leakage, Feature Stability, and Transportability in Translational Omics Classification",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "A reproducible audit case study of data leakage, feature-selection stability, and external-cohort transportability in transcriptomic biomarker classification, using a leakage-aware SMO-trained linear SVM workflow on public breast-cancer neoadjuvant-chemotherapy cohorts (pCR vs. residual disease). Cohorts: GSE25055 (discovery/internal validation), GSE25065 (same-platform same-study-family validation), and GSE41998 (predeclared cross-platform transportability sensitivity). Version v10.2 (final consistency QA).",
-  "version": "v10.2",
+  "description": "A reproducible evidence-audit framework for data leakage, feature-selection stability, and external-cohort transportability in high-dimensional translational omics classification, using a leakage-aware SMO-trained linear SVM workflow on public breast-cancer neoadjuvant-chemotherapy cohorts (pCR vs. residual disease). Cohorts: GSE25055 (discovery/internal validation), GSE25065 (same-platform same-study-family validation), and GSE41998 (cross-platform transportability sensitivity).",
+  "version": "1.1.0",
   "language": "eng",
   "access_right": "open",
   "license": "cc-by-4.0",
   "keywords": [
     "data leakage",
     "transcriptomics",
-    "biomarker discovery",
+    "translational omics",
     "support vector machine",
     "nested cross-validation",
     "feature selection",
     "feature stability",
-    "pathological complete response"
+    "reproducibility"
   ],
   "creators": [
-    {
-      "name": "Yang, Iris",
-      "affiliation": "California State University, Los Angeles, USA; Purdue University, USA"
-    },
-    {
-      "name": "Wong, Wing-Keung",
-      "affiliation": "Asia University, Taiwan"
-    },
-    {
-      "name": "Tan, Paul",
-      "affiliation": "Affiliation to be finalized"
-    },
-    {
-      "name": "Huang, Chung-I",
-      "affiliation": "National Chung Hsing University, Taiwan"
-    },
-    {
-      "name": "Wang, Jewel",
-      "affiliation": "Brandeis University, USA"
-    }
+    { "name": "Yang, Iris", "affiliation": "California State University, Los Angeles, USA; Purdue University, USA" },
+    { "name": "Wong, Wing-Keung", "affiliation": "Asia University, Taiwan" },
+    { "name": "Tan, Paul", "affiliation": "Harvard University Extension School, USA" },
+    { "name": "Huang, Chung-I", "affiliation": "National Chung Hsing University, Taiwan" },
+    { "name": "Wang, Jewel", "affiliation": "Brandeis University, USA" }
   ]
 }
